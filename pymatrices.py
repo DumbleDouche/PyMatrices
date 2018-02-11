@@ -30,8 +30,8 @@ def   arrayShapeAssert(array):
         " should a two-dimension array")
     try:
         columns = len(array[0])
-    except IndexError:
-        raise IndexError("Object should be a two-dimensionnal array")
+    except TypeError:
+        raise TypeError("Object should be a two-dimensionnal array")
     for i, row in enumerate(array):
         if len(row) != columns:
             raise IndexError("Dimensions are not consistent: row [%d] is of "
@@ -47,23 +47,16 @@ class Matrix(object):
         Give an integer to fill a matrix of x rows by y columns
         or give a rectangular array (consistent number of columns)
         """
+        self.newMatrix(fill, rows, columns)
+
+    def newMatrix(self, fill, rows=None, columns=None):
         self.nrows = rows
         self.ncolumns = columns
         if type(fill) is list:
             [self.nrows, self.ncolumns] = arrayShapeAssert(fill)
             self.grid = fill
         elif isinstance(fill, (float, int)):
-            if self.nrows == None or self.ncolumns == None or self.nrows <= 0 \
-                or self.ncolumns <= 0:
-                raise ValueError("If value provided is not an array"
-                " the matrix's size must be specified by `rows` and `columns` "
-                "greater than 0")
-            self.newMatrix(fill, self.nrows, self.ncolumns)
+            inputTypeAssert([[rows, int], [columns, int]])
+            self.grid  = [[float(fill) for point in range(self.ncolumns)] for row in range(self.nrows)]
         else:
-            raise ValueError("Bad Value type for the first parameter")
-
-    def newMatrix(self, value, rows, columns):
-        inputTypeAssert([[rows, int], [columns, int], [value, (float, int)]])
-        self.nrows = rows
-        self.ncols = columns
-        self.grid  = [[value for point in range(self.ncols)] for row in range(self.nrows)]
+            raise TypeError("Bad Value type for the first parameter")
