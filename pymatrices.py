@@ -1,6 +1,6 @@
 """
 Very modest attempt at making a library on Matrix operations in Python
-This isn't probably the fastest thing I could come up with, i just 
+This probably isn't the fastest thing I could've came up with, i just 
 tried to make it relatively easy to debug.
 I'll probably have a version, without any debugging elements, which i'll
 use whenever their use in the general algorithm is safe and sound.
@@ -15,26 +15,30 @@ def   inputTypeAssert(inputs):
     """
     for el in inputs:
         if not isinstance(el[0], el[1]):
-            raise ValueError("Parameter |" + str(el[0]) + 
+            types = [el[1][i].__name__ for i, x in enumerate(el[1])]
+            if len(el[1]) > 1:
+                types = " or ".join([', '.join(types[:-1]),types[-1]])
+            raise TypeError("Parameter |" + str(el[0]) + 
             "| is of type %s but should be of type %s"
-            % (el[0].__class__.__name__, el[1].__name__))
+            % (el[0].__class__.__name__, types))
 
 def   arrayShapeAssert(array):
     try:
         rows = len(array)
     except TypeError:
-        raise TypeError("Object of", type(array), "should a two-dimension array")
+        raise TypeError("Object of type " + array.__class__.__name__ +
+        " should a two-dimension array")
     try:
         columns = len(array[0])
     except IndexError:
         raise IndexError("Object should be a two-dimensionnal array")
     for i, row in enumerate(array):
         if len(row) != columns:
-            raise ValueError("Dimensions are not consistent: row [%d] is of "
+            raise IndexError("Dimensions are not consistent: row [%d] is of "
             "size %d and row [%d] is of size %d"
             % (i-1, columns, i, len(row)))
-            inputTypeAssert([[el, (int, float)] for el in row])
-    return [row, columns]
+        inputTypeAssert([[el, (int, float)] for el in row])
+    return [rows, columns]
 
 class Matrix(object):
 
