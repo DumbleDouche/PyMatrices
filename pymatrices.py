@@ -48,16 +48,20 @@ class Matrix(object):
         or give a rectangular array (consistent number of columns)
         """
         self.newMatrix(fill, rows, columns)
+    
+    def __repr__(self):
+        a = "\n".join([str(el) for el in self.__grid__])
+        return a
 
     def newMatrix(self, fill, rows=None, columns=None):
         self.nrows = rows
-        self.ncolumns = columns
+        self.ncols = columns
         if type(fill) is list:
-            [self.nrows, self.ncolumns] = arrayShapeAssert(fill)
+            [self.nrows, self.ncols] = arrayShapeAssert(fill)
             self.__grid__ = fill
         elif isinstance(fill, (float, int)):
             inputTypeAssert([[rows, int], [columns, int]])
-            self.__grid__  = [[float(fill) for point in range(self.ncolumns)] for row in range(self.nrows)]
+            self.__grid__  = [[float(fill) for point in range(self.ncols)] for row in range(self.nrows)]
         else:
             raise TypeError("Bad Value type for the first parameter")
 
@@ -65,15 +69,24 @@ class Matrix(object):
         if isinstance(other, (float, int)):
             for n, el in enumerate(self.__grid__):
                 for m, point in enumerate(el):
-                    self.__grid__[i][j] += other
+                    return [[self.__grid__[n][m] + other for m in range(self.ncols)] for n in range(self.nrows)]
         elif isinstance(other, list):
             [rows, cols] = arrayShapeAssert(other)
-            if [rows, cols] == [self.nrows, self.ncolumns]:
+            if [rows, cols] == [self.nrows, self.ncols]:
                 return [[self.__grid__[n][m] + other[n][m] for m in range(cols)] for n in range(rows)]
             else:
                 raise IndexError("Dimensions do not match")
         else:
             raise TypeError("Add either a scalar or a matrix of same dimensions")
+
+    def __radd__(self, other):
+        return self.__add__(other)
+
+    def __sub__(self, other):
+        return self.__add__(-other)
+    
+    def __rsub__(self, other):
+        return self.__add__(-other)
                         
 
                     

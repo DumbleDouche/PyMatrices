@@ -131,11 +131,43 @@ class TestPM(unittest.TestCase):
         self.assertEqual(variable.__grid__
         , matrix_3)
 
-    def test_addFunction_Return_1(self):
+    def test_addFunction_incorrectDimensions_1(self):
         variable.newMatrix(1, 2, 3)
-        self.assertEqual(variable + [[3, 2, 1], 
+        self.assertRaises(IndexError, variable.__add__, [[3,2,1], [1,2,2], [2,2,2]])
+
+    def test_addFunction_incorrectDimensions_2(self):
+        variable.newMatrix(1, 2, 3)
+        self.assertRaises(IndexError, variable.__add__, [[3,2,1]])
+
+    def test_addFunction_incorrectType(self):
+        variable.newMatrix(1, 2, 3)
+        self.assertRaises(TypeError, variable.__add__, 'a')
+
+    def test_addFunction_Return_1(self):
+        variable.newMatrix(1, 3, 1)
+        self.assertEqual(variable + 2
+        , [[3], [3], [3]])
+
+    def test_addFunction_Return_2(self):
+        variable.newMatrix(1, 1, 3)
+        self.assertEqual(variable + 2
+        , [[3,3,3]])
+
+    def test_addFunction_Return_3(self):
+        variable.newMatrix(1, 2, 3)
+        self.assertEqual(variable + [[3, 2, 1],
                                      [2, 2, 2]]
         , [[4,3,2],[3,3,3]])
+
+    def test_addFunction_Return_4(self):
+        variable.newMatrix(1, 2, 3)
+        self.assertEqual(variable + 2
+        , [[3,3,3],[3,3,3]])
+
+    def test_addFunction_Return_5(self):
+        variable.newMatrix([[0,1,2],[3,4,5],[6,7,8]])
+        self.assertEqual(2 + variable
+        , [[2,3,4],[5,6,7],[8,9,10]])
 
 if __name__ == "__main__":
     unittest.main()
