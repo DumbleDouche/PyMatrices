@@ -118,18 +118,24 @@ class TestPM(unittest.TestCase):
 
     def test_newMatrix_Return_1(self):
         variable.newMatrix(0, 2, 3)
-        self.assertEqual(variable.grid
+        self.assertEqual(variable.__grid__
         , matrix_1)
 
     def test_newMatrix_Return_2(self):
         variable.newMatrix(1, 3, 2)
-        self.assertEqual(variable.grid
+        self.assertEqual(variable.__grid__
         , matrix_2)
 
     def test_newMatrix_Return_3(self):
         variable.newMatrix(3, 3, 3)
-        self.assertEqual(variable.grid
+        self.assertEqual(variable.__grid__
         , matrix_3)
+
+    def test_addFunction_Return_1(self):
+        variable.newMatrix(1, 2, 3)
+        self.assertEqual(variable + [[3, 2, 1], 
+                                     [2, 2, 2]]
+        , [[4,3,2],[3,3,3]])
 
 if __name__ == "__main__":
     unittest.main()

@@ -54,9 +54,26 @@ class Matrix(object):
         self.ncolumns = columns
         if type(fill) is list:
             [self.nrows, self.ncolumns] = arrayShapeAssert(fill)
-            self.grid = fill
+            self.__grid__ = fill
         elif isinstance(fill, (float, int)):
             inputTypeAssert([[rows, int], [columns, int]])
-            self.grid  = [[float(fill) for point in range(self.ncolumns)] for row in range(self.nrows)]
+            self.__grid__  = [[float(fill) for point in range(self.ncolumns)] for row in range(self.nrows)]
         else:
             raise TypeError("Bad Value type for the first parameter")
+
+    def __add__(self, other):
+        if isinstance(other, (float, int)):
+            for n, el in enumerate(self.__grid__):
+                for m, point in enumerate(el):
+                    self.__grid__[i][j] += other
+        elif isinstance(other, list):
+            [rows, cols] = arrayShapeAssert(other)
+            if [rows, cols] == [self.nrows, self.ncolumns]:
+                return [[self.__grid__[n][m] + other[n][m] for m in range(cols)] for n in range(rows)]
+            else:
+                raise IndexError("Dimensions do not match")
+        else:
+            raise TypeError("Add either a scalar or a matrix of same dimensions")
+                        
+
+                    
