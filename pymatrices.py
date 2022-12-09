@@ -1,6 +1,6 @@
 """
 Very modest attempt at making a library on Matrix operations in Python
-This probably isn't the fastest thing I could've came up with, i just 
+This probably isn't the fastest thing I could've come up with, i just 
 tried to make it relatively easy to debug.
 I'll probably have a version, without any debugging elements, which i'll
 use whenever their use in the general algorithm is safe and sound.
